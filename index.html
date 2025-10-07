@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec Analytics | Caso LAUSD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066ff;
+            --secondary-blue: #004dd9;
+            --accent-blue: #3388ff;
+            --light-blue: #e6f2ff;
+            --dark-blue: #001a4d;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--gray-800);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Geometric Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, var(--primary-blue) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, var(--accent-blue) 1px, transparent 1px);
+            background-size: 60px 60px, 40px 40px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        /* Header */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 50%, var(--dark-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="hexagons" x="0" y="0" width="100" height="87" patternUnits="userSpaceOnUse"><polygon points="50,1 95,25 95,75 50,99 5,75 5,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23hexagons)"/></svg>');
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e6f2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--white);
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-2xl);
+            background: var(--gray-50);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .navbar.scrolled {
+            top: 1rem;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+            background: var(--light-blue);
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.active {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Case Study */
+        .case-study {
+            background: var(--gray-50);
+        }
+
+        .case-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue), var(--secondary-blue));
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .case-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .case-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .case-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .case-subtitle {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, var(--warning-light), #fef3c7);
+            border: 1px solid var(--warning);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .alert-box::before {
+            content: '⚠️';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-box {
+            background: var(--gray-100);
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            position: relative;
+        }
+
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-size: 3rem;
+            color: var(--primary-blue);
+            opacity: 0.3;
+        }
+
+        /* Attack Phases */
+        .phases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .phase-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-2xl);
+            border-color: var(--primary-blue);
+        }
+
+        .phase-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .phase-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .phase-card:hover .phase-number {
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .phase-description {
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+
+        /* Controls Section */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .control-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .control-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--light-blue), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .control-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .control-card:hover::before {
+            opacity: 1;
+        }
+
+        .control-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+            margin: 0 auto 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .control-card:hover .control-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .control-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .control-description {
+            color: var(--gray-600);
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* References */
+        .references {
+            background: var(--gray-50);
+        }
+
+        .reference-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .reference-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--gray-700);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reference-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .reference-link:hover {
+            transform: translateX(5px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-md);
+        }
+
+        .reference-link:hover::before {
+            left: 100%;
+        }
+
+        .reference-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--light-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.25rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-900);
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Scroll Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                position: fixed;
+                top: auto;
+                bottom: 2rem;
+                left: 2rem;
+                right: 2rem;
+                transform: none;
+                border-radius: 20px;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                justify-content: space-around;
+                gap: 0;
+            }
+
+            .nav-links a {
+                padding: 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .case-card,
+            .control-card {
+                padding: 2rem;
+            }
+
+            .phases-grid,
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--gray-200);
+            border-top: 3px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Cursor Trail Effect */
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 9998;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Cursor Trail -->
+    <div class="cursor-trail" id="cursorTrail"></div>
+
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <ul class="nav-links">
+            <li><a href="#hero" class="active">Início</a></li>
+            <li><a href="#case">Caso</a></li>
+            <li><a href="#phases">Fases</a></li>
+            <li><a href="#controls">Controles</a></li>
+            <li><a href="#references">Referências</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🔒 Análise de Segurança Cibernética</div>
+            <h1>CyberSec Analytics</h1>
+            <p>Estudo de caso detalhado do ataque ransomware ao Distrito Escolar Unificado de Los Angeles</p>
+            <a href="#case" class="cta-button">
+                <span>Explorar Caso</span>
+                <span>↓</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Case Study Section -->
+    <section id="case" class="section case-study">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <div class="section-badge">📊 Caso de Estudo</div>
+                <h2 class="section-title">Ataque ao LAUSD</h2>
+                <p class="section-subtitle">Análise detalhada do ataque de ransomware que comprometeu 500GB de dados pessoais</p>
+            </div>
+
+            <div class="case-card scroll-reveal">
+                <div class="case-header">
+                    <div class="case-icon">🏫</div>
+                    <div>
+                        <div class="case-title">Distrito Escolar Unificado de Los Angeles</div>
+                        <div class="case-subtitle">Segundo maior distrito escolar dos EUA</div>
+                    </div>
+                </div>
+
+                <p>O <strong>Distrito Escolar Unificado de Los Angeles (LAUSD)</strong> foi alvo de um sofisticado ataque de ransomware em setembro de 2023, resultando em uma das maiores violações de dados educacionais da história.</p>
+
+                <div class="alert-box">
+                    <div class="alert-title">Impacto Crítico</div>
+                    <p>Os atacantes conseguiram exfiltrar <strong>500 GB de informações pessoais</strong> sensíveis, incluindo dados de estudantes, pais e funcionários do distrito escolar.</p>
+                </div>
+
+                <p>A <strong>Vice Society</strong>, uma organização criminosa especializada em ataques ao setor educacional, reivindicou a responsabilidade pelo ataque. Após a recusa do distrito em pagar o resgate exigido, todos os dados roubados foram disponibilizados publicamente na dark web em outubro de 2023.</p>
+
+                <div class="quote-box">
+                    <p><em>A CISA desperdiçou nosso tempo, nós desperdiçamos a reputação da CISA</em></p>
+                    <small><strong>Vice Society</strong> - Mensagem deixada no site de vazamento</small>
+                    <br><small><strong>CISA:</strong> Agência de Segurança Cibernética e de Infraestrutura dos EUA</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attack Phases Section -->
+    <section id="phases" class="section">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <div class="section-badge">⚡ Metodologia</div>
+                <h2 class="section-title">Fases do Ataque</h2>
+                <p class="section-subtitle">Compreenda as 7 etapas estruturadas que compõem um ataque cibernético sofisticado</p>
+            </div>
+
+            <div class="phases-grid">
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">1</div>
+                        <div class="phase-title">Reconhecimento</div>
+                    </div>
+                    <p class="phase-description">Coleta sistemática de informações públicas sobre o alvo através de redes sociais, sites corporativos, registros DNS e outras fontes de inteligência aberta (OSINT).</p>
+                </div>
+
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">2</div>
+                        <div class="phase-title">Enumeração</div>
+                    </div>
+                    <p class="phase-description">Descoberta ativa de serviços em execução, portas abertas, versões de software e identificação de possíveis vetores de ataque na infraestrutura do alvo.</p>
+                </div>
+
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">3</div>
+                        <div class="phase-title">Acesso Inicial</div>
+                    </div>
+                    <p class="phase-description">Estabelecimento do primeiro ponto de entrada no sistema através de técnicas como phishing, exploração de vulnerabilidades ou uso de credenciais comprometidas.</p>
+                </div>
+
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">4</div>
+                        <div class="phase-title">Escalonamento</div>
+                    </div>
+                    <p class="phase-description">Elevação de privilégios para obter acesso administrativo e controle mais amplo sobre os sistemas comprometidos da organização.</p>
+                </div>
+
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">5</div>
+                        <div class="phase-title">Movimento Lateral</div>
+                    </div>
+                    <p class="phase-description">Expansão do acesso através da rede interna para alcançar sistemas críticos, servidores de dados e outros recursos valiosos da organização.</p>
+                </div>
+
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">6</div>
+                        <div class="phase-title">Ação no Objetivo</div>
+                    </div>
+                    <p class="phase-description">Execução do objetivo principal do ataque: exfiltração de dados sensíveis, implementação de ransomware ou sabotagem dos sistemas críticos.</p>
+                </div>
+
+                <div class="phase-card scroll-reveal">
+                    <div class="phase-header">
+                        <div class="phase-number">7</div>
+                        <div class="phase-title">Persistência</div>
+                    </div>
+                    <p class="phase-description">Manutenção de acesso contínuo aos sistemas comprometidos e eliminação de evidências para evitar detecção pelas equipes de segurança.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Controls Section -->
+    <section id="controls" class="section">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <div class="section-badge">🛡️ Defesa</div>
+                <h2 class="section-title">Controles de Segurança</h2>
+                <p class="section-subtitle">Estratégias de defesa em profundidade para mitigar riscos e reduzir o impacto de ataques cibernéticos</p>
+            </div>
+
+            <div class="controls-grid">
+                <div class="control-card scroll-reveal">
+                    <div class="control-icon">⚙️</div>
+                    <h3 class="control-title">Controles Técnicos</h3>
+                    <p class="control-description">Implementação de soluções tecnológicas avançadas incluindo firewalls de próxima geração, sistemas de detecção e resposta (EDR), criptografia end-to-end, backups automatizados e monitoramento contínuo de rede.</p>
+                </div>
+
+                <div class="control-card scroll-reveal">
+                    <div class="control-icon">📋</div>
+                    <h3 class="control-title">Controles Administrativos</h3>
+                    <p class="control-description">Desenvolvimento de políticas de segurança abrangentes, procedimentos operacionais padronizados, programas de conscientização em segurança, planos de resposta a incidentes e governança de riscos cibernéticos.</p>
+                </div>
+
+                <div class="control-card scroll-reveal">
+                    <div class="control-icon">🏢</div>
+                    <h3 class="control-title">Controles Físicos</h3>
+                    <p class="control-description">Proteção da infraestrutura física através de sistemas de videomonitoramento, controles de acesso biométricos, salas seguras para servidores, sistemas de alarme e proteção ambiental dos ativos críticos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="section references">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <div class="section-badge">📚 Fontes</div>
+                <h2 class="section-title">Referências</h2>
+                <p class="section-subtitle">Fontes confiáveis e documentação técnica utilizada nesta análise</p>
+            </div>
+
+            <div class="reference-grid scroll-reveal">
+                <a href="https://arcticwolf.com/resources/blog/cyber-attacks-against-schools-and-colleges/" target="_blank" class="reference-link">
+                    <div class="reference-icon">🔗</div>
+                    <div>
+                        <strong>Arctic Wolf - Cyber Attacks Against Schools and Colleges</strong>
+                        <p>Análise abrangente sobre ataques cibernéticos direcionados ao setor educacional</p>
+                    </div>
+                </a>
+
+                <a href="https://www.bleepingcomputer.com/news/security/ransomware-gang-leaks-data-stolen-from-lausd-school-system/" target="_blank" class="reference-link">
+                    <div class="reference-icon">🔗</div>
+                    <div>
+                        <strong>BleepingComputer - Ransomware Gang Leaks LAUSD Data</strong>
+                        <p>Cobertura detalhada do vazamento de dados do distrito escolar de Los Angeles</p>
+                    </div>
+                </a>
+
+                <a href="https://www.cbsnews.com/losangeles/news/hackers-threaten-to-leak-stolen-information-lausd-does-not-pay-ransom/" target="_blank" class="reference-link">
+                    <div class="reference-icon">🔗</div>
+                    <div>
+                        <strong>CBS News - LAUSD Ransomware Attack Coverage</strong>
+                        <p>Reportagem jornalística sobre as ameaças e impactos do ataque ao LAUSD</p>
+                    </div>
+                </a>
+
+                <div class="reference-link" style="pointer-events: none; opacity: 0.7;">
+                    <div class="reference-icon">📖</div>
+                    <div>
+                        <strong>Material Didático - Slides 11 e 13</strong>
+                        <p>Conteúdo acadêmico sobre metodologias de ataque e controles de segurança</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 CyberSec Analytics | Desenvolvido para fins educacionais em segurança cibernética</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Animation
+        window.addEventListener('load', () => {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            setTimeout(() => {
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Cursor Trail Effect
+        const cursorTrail = document.getElementById('cursorTrail');
+        let mouseX = 0, mouseY = 0;
+        let trailX = 0, trailY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateTrail() {
+            trailX += (mouseX - trailX) * 0.1;
+            trailY += (mouseY - trailY) * 0.1;
+            
+            cursorTrail.style.left = trailX - 10 + 'px';
+            cursorTrail.style.top = trailY - 10 + 'px';
+            
+            requestAnimationFrame(animateTrail);
+        }
+        animateTrail();
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Active link highlighting
+            const sections = document.querySelectorAll('section[id]');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Enhanced Card Interactions
+        document.querySelectorAll('.phase-card, .control-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+
+            card.addEventListener('click', function() {
+                this.style.transform = 'translateY(-5px) scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                }, 150);
+            });
+        });
+
+        // Parallax Effect for Background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.bg-pattern');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // Dynamic Text Animation
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize animations when page loads
+        setTimeout(() => {
+            const heroTitle = document.querySelector('.hero h1');
+            if (heroTitle) {
+                const originalText = heroTitle.textContent;
+                typeWriter(heroTitle, originalText, 100);
+            }
+        }, 1500);
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.cta-button, .phase-card, .control-card').forEach(element => {
+            element.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(0, 102, 255, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Performance optimization: Throttle scroll events
+        let ticking = false;
+        function updateOnScroll() {
+            // Scroll-based animations here
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateOnScroll);
+                ticking = true;
+            }
+        });
+    </script>
+</body>
+</html>
